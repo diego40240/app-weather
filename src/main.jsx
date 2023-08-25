@@ -5,7 +5,6 @@ import "./index.css";
 import {
   Route,
   RouterProvider,
-  Routes,
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
@@ -20,15 +19,16 @@ const router = createBrowserRouter(
           path=":lat/:lon"
           element={<Weather />}
           loader={async ({ params }) => {
-            const lat = params.lat;
-            const lon = params.lon;
+            const lat = atob(params.lat);
+            const lon = atob(params.lon);
             const waitPrediction = await fetchForecast(lat, lon);
             const dataPrediction = waitPrediction;
-            return dataPrediction;
+
+            return { data: dataPrediction };
           }}
         />
       </Route>
-      <Route path="/*" element={<App />} />
+      <Route path="*" element={<App />} />
     </>
   )
 );

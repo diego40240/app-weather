@@ -9,7 +9,7 @@ export async function fetchForecast(lat = null, lon = null) {
     );
 
     const result = await response.json();
-    const data = result;
+    const data = result.list;
     return data;
   }
 }

@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
-import { useLoaderData, useParams } from "react-router-dom";
-import { fetchForecast } from "../../services/fetchForecast";
+import { useLoaderData } from "react-router-dom";
 
 const WEEK_DAYS = [
   "Domingo",
@@ -19,15 +17,13 @@ const forecastDays = WEEK_DAYS.slice(dayInAWeek, WEEK_DAYS.length).concat(
 );
 
 export function Weather() {
-  const data = useLoaderData();
-
-  const [listData, setListData] = useState(data.list);
+  const { data } = useLoaderData();
 
   return (
     <section>
       <article></article>
       <article>
-        {data.list.map((list, index) => {
+        {data.map((list, index) => {
           return (
             <details
               key={index}
