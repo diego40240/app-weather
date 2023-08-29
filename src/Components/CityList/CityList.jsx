@@ -20,7 +20,9 @@ export function CityList({ isLoading, citylist, handleClick }) {
           return (
             <li key={index}>
               <Link
-                to={`${btoa(data.lat)}/${btoa(data.lon)}`}
+                to={`${btoa(data.lat)}/${btoa(data.lon)}/${data.name}/${
+                  data.country
+                }`}
                 className="inline-block p-2 w-full"
                 onClick={handleClick}
               >

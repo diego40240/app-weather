@@ -16,15 +16,17 @@ const router = createBrowserRouter(
     <>
       <Route path="/" element={<App />}>
         <Route
-          path=":lat/:lon"
+          path=":lat/:lon/:name/:country"
           element={<Weather />}
           loader={async ({ params }) => {
             const lat = atob(params.lat);
             const lon = atob(params.lon);
+            const name = params.name;
+            const country = params.country;
             const waitPrediction = await fetchForecast(lat, lon);
             const dataPrediction = waitPrediction;
 
-            return { data: dataPrediction };
+            return { data: dataPrediction, name, country };
           }}
         />
       </Route>

@@ -18,6 +18,7 @@ export default function SelectSearch() {
     debounce(async (textSearch) => {
       const data = await fetchCity(textSearch);
       const newData = data;
+      console.log(newData);
       setCitylist(newData);
       setIsLoading(false);
     }, 500),
@@ -39,6 +40,7 @@ export default function SelectSearch() {
   }
   return (
     <div name="selectSearch" id="select" className="my-5">
+      <h1 className="text-center font-bold text-4xl mb-8">Weather</h1>
       <Search handleChange={handleChange} handleClick={handleClick} />
       {isItemSearchVisible && (
         <CityList

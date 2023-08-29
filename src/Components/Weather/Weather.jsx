@@ -1,4 +1,7 @@
 import { useLoaderData } from "react-router-dom";
+import { SliderWeather } from "./SliderWeather";
+import { ListWeather } from "./ListWeather";
+import { useState } from "react";
 
 const WEEK_DAYS = [
   "Domingo",
@@ -17,63 +20,43 @@ const forecastDays = WEEK_DAYS.slice(dayInAWeek, WEEK_DAYS.length).concat(
 );
 
 export function Weather() {
-  const { data } = useLoaderData();
-
+  const { data, name, country } = useLoaderData();
+  const [onList, setOnList] = useState(false);
+  const opacity = onList
+    ? "border-cyan-400 fill-cyan-400"
+    : " border-cyan-600 fill-cyan-600";
+  function handleClickListar() {
+    setOnList(!onList);
+  }
   return (
     <section>
-      <article></article>
-      <article>
-        {data.map((list, index) => {
-          return (
-            <details
-              key={index}
-              className="mb-5 rounded-lg border border-sky-600"
-            >
-              <summary className="list-none flex flex-col flex-wrap items-center p-6  bg-sky-600 text-white font-semibold cursor-pointer rounded-lg">
-                <div className="flex flex-col items-center">
-                  <h2 className="text-3xl">{forecastDays[index]}</h2>
-                  <img
-                    src={`https://openweathermap.org/img/wn/${list.weather[0].icon}@2x.png`}
-                    alt={list.weather[0].main}
-                    className="h-20"
-                  />
-                  <h2>
-                    {list.weather[0].main} - {list.weather[0].description}
-                  </h2>
-                </div>
-
-                <h2 className="text-3xl">{list.main.temp + " ºC"}</h2>
-              </summary>
-              <ul className="p-4 flex flex-wrap flex-col gap-4 md:flex-row md:justify-center md:[&>li]:w-1/3 [&>li>span]:font-semibold">
-                <li>
-                  <span>Velocidad del aire: </span>
-                  {list.wind.speed + " m/s"}{" "}
-                </li>
-                <li>
-                  <span>Direccíon del viento: </span>
-                  {list.wind.deg + " deg"}{" "}
-                </li>
-                <li>
-                  <span>Nublado: </span>
-                  {list.clouds.all + " %"}{" "}
-                </li>
-                <li>
-                  <span>Humedad: </span>
-                  {list.main.humidity + " %"}{" "}
-                </li>
-                <li>
-                  <span>Presión atmosférica a nivel del mar: </span>
-                  {list.main.pressure + " hPa"}
-                </li>
-                <li>
-                  <span>Presión atmosférica a nivel del suelo: </span>
-                  {list.main.grnd_level + " hPa"}
-                </li>
-              </ul>
-            </details>
-          );
-        })}
-      </article>
+      <h2 className="text-center font-bold text-3xl">
+        {name}, {country}
+      </h2>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        height="1em"
+        viewBox="0 0 512 512"
+        className={
+          "text-5xl border-2 p-2 border-cyan-600 mb-2 cursor-pointer " + opacity
+        }
+        onClick={handleClickListar}
+      >
+        <path d="M448 160H320V128H448v32zM48 64C21.5 64 0 85.5 0 112v64c0 26.5 21.5 48 48 48H464c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H48zM448 352v32H192V352H448zM48 288c-26.5 0-48 21.5-48 48v64c0 26.5 21.5 48 48 48H464c26.5 0 48-21.5 48-48V336c0-26.5-21.5-48-48-48H48z" />
+      </svg>
+      {onList ? (
+        <article>
+          {data.map((list, index) => {
+            return (
+              <ListWeather key={index} list={list} dia={forecastDays[index]} />
+            );
+          })}
+        </article>
+      ) : (
+        <article className="relative overflow-hidden ">
+          <SliderWeather data={data} forecastDays={forecastDays} />
+        </article>
+      )}
     </section>
   );
 }
